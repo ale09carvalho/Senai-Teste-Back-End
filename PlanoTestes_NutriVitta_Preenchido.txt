@@ -1,0 +1,332 @@
+================================================================================
+PLANO DE TESTE — NutriVitta Calculadora de IMC
+================================================================================
+
+Substitua [Nome do Aluno] pelo seu nome antes de entregar.
+
+--------------------------------------------------------------------------------
+1. INTRODUÇÃO — Objetivo do plano de teste
+--------------------------------------------------------------------------------
+
+Garantir que o sistema NutriVitta (Calculadora de IMC — API v1.0.0 e interface
+web) funcione conforme os requisitos da UC15 (Testes de Back-End), validando o
+cálculo do Índice de Massa Corporal, a classificação segundo a tabela Abeso
+(2017), as validações de entrada da API REST, o tratamento de erros e os fluxos
+principais da interface utilizada pelo paciente.
+
+--------------------------------------------------------------------------------
+2. ESCOPO DO TESTE
+--------------------------------------------------------------------------------
+
+DENTRO DO ESCOPO:
+- API REST Express/TypeScript (porta 3000)
+  • GET /health — verificação de saúde da API
+  • GET /api — metadados da API
+  • GET /api/v1/imc/boas-vindas — mensagem de boas-vindas
+  • GET /api/v1/imc/tabela — tabela Abeso (2017)
+  • POST /api/v1/imc/calcular — cálculo de IMC
+- Regras de negócio: conversão de unidades (kg/lb, cm/m/in), fórmula IMC,
+  classificação Abeso, peso ideal e mensagens NutriVitta
+- Validação de dados com Zod (genero, idade, peso, altura, unidades)
+- Interface web (public/index.html, app.js): telas Boas-vindas, Formulário e
+  Resultado; validação de gênero; exibição de erros; novo cálculo via botão (+)
+- Testes unitários existentes (Vitest) em tests/imc.service.test.ts
+
+FORA DO ESCOPO:
+- Autenticação e autorização de usuários
+- Persistência em banco de dados
+- Botões decorativos sem funcionalidade (menu, notificações, navegação inferior)
+- Testes de performance, carga e segurança avançada
+- Integração com sistemas externos
+
+--------------------------------------------------------------------------------
+3. CRITÉRIOS DE ACEITAÇÃO
+--------------------------------------------------------------------------------
+
+O teste será considerado aprovado quando:
+
+1. Todos os casos de teste planejados forem executados e documentados.
+2. A API retornar HTTP 200 com IMC, classificação, peso ideal e tabela Abeso
+   para entradas válidas.
+3. Entradas inválidas retornarem HTTP 400 com mensagens claras (campo + erro).
+4. O IMC for calculado corretamente: IMC = peso(kg) / altura(m)², arredondado
+   com 1 casa decimal (ex.: 54 kg e 165 cm → IMC 19,8 — peso normal).
+5. As faixas Abeso forem respeitadas nos limites (18,5; 25; 30; 35; 40).
+6. A interface permitir nova consulta com campos em branco após clicar em (+).
+7. Os testes unitários Vitest (npm test) executarem com 100% de aprovação.
+8. Não houver defeitos críticos ou de alta severidade em aberto.
+
+--------------------------------------------------------------------------------
+4. ABORDAGEM DE TESTE
+--------------------------------------------------------------------------------
+
+| Tipo                    | Objetivo                                      | Ferramenta        |
+|-------------------------|-----------------------------------------------|-------------------|
+| Teste unitário          | Funções de cálculo, conversão e classificação | Vitest           |
+| Teste de integração/API | Endpoints REST, status HTTP e JSON            | Postman/Insomnia |
+| Teste funcional (manual)| Fluxos da interface web                       | Navegador Chrome |
+| Teste de validação      | Campos obrigatórios e regras Zod              | Postman + UI     |
+| Teste de regressão      | Reexecutar casos após correções               | Vitest + manual  |
+
+Estratégia: executar primeiro os testes automatizados (npm test); em seguida
+testes de API; por fim testes manuais da interface.
+
+--------------------------------------------------------------------------------
+5. RECURSOS DE TESTE
+--------------------------------------------------------------------------------
+
+- Hardware: computador com Windows 10+, conexão local
+- Software: Node.js, npm, navegador Google Chrome ou Edge
+- Ambiente: API em http://localhost:3000 (npm run dev)
+- Ferramentas: Vitest 3.0, Postman ou Insomnia, DevTools do navegador
+- Documentação: código-fonte em d:\Sistemas\Testes-de-Back-end
+- Dados de teste: massas de dados definidas nos casos de teste (CT-001 a CT-008)
+- Equipe: 1 testador (aluno) e 1 revisor (professor/tutor da UC)
+
+--------------------------------------------------------------------------------
+6. CRONOGRAMA
+--------------------------------------------------------------------------------
+
+| Atividade                              | Início     | Fim        | Duração |
+|----------------------------------------|------------|------------|---------|
+| Revisão do plano e preparação ambiente | 27/06/2026 | 27/06/2026 | 1 dia   |
+| Execução testes unitários (Vitest)     | 28/06/2026 | 28/06/2026 | 1 dia   |
+| Execução testes de API (Postman)       | 29/06/2026 | 30/06/2026 | 2 dias  |
+| Execução testes funcionais (UI)        | 01/07/2026 | 02/07/2026 | 2 dias  |
+| Registro de resultados e correções     | 03/07/2026 | 04/07/2026 | 2 dias  |
+| Relatório final e entrega              | 05/07/2026 | 05/07/2026 | 1 dia   |
+
+--------------------------------------------------------------------------------
+7. RESPONSABILIDADES
+--------------------------------------------------------------------------------
+
+Gerente de projeto: Professor ou tutor da UC15 — Testes de Back-End
+Testadores: [Nome do Aluno] — elaboração do plano, execução dos casos de teste,
+            registro de evidências e relatório de defeitos
+Desenvolvedor: [Nome do Aluno] — correção de defeitos identificados nos testes
+
+--------------------------------------------------------------------------------
+8. RISCOS E PROBLEMAS
+--------------------------------------------------------------------------------
+
+| Risco                              | Impacto | Mitigação                          |
+|------------------------------------|---------|------------------------------------|
+| API não iniciada (porta 3000)      | Alto    | Verificar npm run dev antes dos testes |
+| Ambiente Node.js desatualizado     | Médio   | Usar Node.js LTS compatível        |
+| Dados de teste inconsistentes      | Médio   | Usar valores fixos dos casos CT-xxx |
+| Falta de testes automatizados API  | Médio   | Complementar com Postman manual    |
+| Documento Word bloqueado/aberto    | Baixo   | Salvar cópia antes de editar       |
+
+--------------------------------------------------------------------------------
+9. PLANO DE COMUNICAÇÃO
+--------------------------------------------------------------------------------
+
+A comunicação será realizada através de reuniões semanais de status, bem como
+relatórios semanais de progresso contendo: casos executados, aprovados/reprovados,
+defeitos encontrados e status das correções.
+
+--------------------------------------------------------------------------------
+10. APROVAÇÃO
+--------------------------------------------------------------------------------
+
+Este plano de teste será aprovado pelo gerente de projeto e pela equipe de
+desenvolvimento antes de sua execução.
+
+Assinatura do testador: _________________________  Data: ___/___/2026
+Assinatura do revisor:   _________________________  Data: ___/___/2026
+
+
+================================================================================
+CASOS DE TESTE — NutriVitta Calculadora de IMC
+================================================================================
+
+Use cada bloco abaixo como uma página/tabela no documento Word.
+Substitua [Nome do Aluno] e ajuste datas se necessário.
+
+
+--------------------------------------------------------------------------------
+CASO DE TESTE CT-001 — Fluxo completo: cálculo de IMC com sucesso (Interface)
+--------------------------------------------------------------------------------
+
+Identificação
+  Versão: 1.0
+  Data de Criação: 27/06/2026
+  Autor: [Nome do Aluno]
+  Descrição: Validar o fluxo principal do paciente desde a tela inicial até a
+             exibição do resultado de IMC com dados válidos.
+
+Caso de Teste
+Id       | Etapas                                              | Resultados Esperados
+---------|-----------------------------------------------------|--------------------------------------------------
+CT-001   | 1. Iniciar a API (npm run dev) e abrir             | Sistema carrega a tela de boas-vindas com título
+         |    http://localhost:3000 no navegador.             | "IMC Calculadora" e botão START.
+         | 2. Clicar no botão START.                          | Exibe o formulário com campos em branco e saudação
+         |                                                    | "Olá!".
+         | 3. Preencher: Nome = Maria; Gênero = Feminino;     | Campos aceitam os valores; cabeçalho exibe
+         |    Idade = 22; Peso = 54 Kg; Altura = 165 Cm.     | "Olá Maria!"; gênero fica destacado.
+         | 4. Clicar em "Calcule seu IMC".                    | Botão exibe "Calculando..." e requisição POST
+         |                                                    | é enviada à API.
+         | 5. Aguardar resposta da API.                       | Tela de resultado é exibida.
+         | 6. Verificar valor do IMC na tela.                 | IMC = 19,8.
+         | 7. Verificar classificação e mensagem.             | Classificação "peso normal"; mensagem de saúde
+         |                                                    | adequada; faixa correspondente destacada na tabela
+         |                                                    | Abeso; peso ideal 50,4–67,8 Kg.
+
+
+--------------------------------------------------------------------------------
+CASO DE TESTE CT-002 — API: cálculo válido via POST /api/v1/imc/calcular
+--------------------------------------------------------------------------------
+
+Identificação
+  Versão: 1.0
+  Data de Criação: 27/06/2026
+  Autor: [Nome do Aluno]
+  Descrição: Validar resposta JSON da API para payload válido (caso Elmira).
+
+Caso de Teste
+Id       | Etapas                                              | Resultados Esperados
+---------|-----------------------------------------------------|--------------------------------------------------
+CT-002   | 1. Garantir que a API está em execução.             | GET /health retorna status "ok".
+         | 2. Enviar POST /api/v1/imc/calcular com body JSON: | Requisição aceita pelo servidor.
+         |    {"nome":"Elmira","genero":"feminino","idade":22,|
+         |     "peso":54,"unidadePeso":"kg","altura":165,      |
+         |     "unidadeAltura":"cm"}                           |
+         | 3. Verificar código HTTP.                          | HTTP 200 OK.
+         | 4. Verificar campo resultado.imc.                  | imc = 19.8
+         | 5. Verificar resultado.classificacao.              | "peso normal"
+         | 6. Verificar pesoIdeal.                            | minimo = 50.4; maximo = 67.8; unidade = "kg"
+         | 7. Verificar tabelaClassificacao.                  | 6 faixas Abeso; exatamente 1 com selecionado=true
+         |                                                    | (peso normal).
+
+
+--------------------------------------------------------------------------------
+CASO DE TESTE CT-003 — API: validação — gênero ausente
+--------------------------------------------------------------------------------
+
+Identificação
+  Versão: 1.0
+  Data de Criação: 27/06/2026
+  Autor: [Nome do Aluno]
+  Descrição: Validar rejeição da API quando o campo genero não é informado.
+
+Caso de Teste
+Id       | Etapas                                              | Resultados Esperados
+---------|-----------------------------------------------------|--------------------------------------------------
+CT-003   | 1. Enviar POST /api/v1/imc/calcular sem o campo     | Requisição processada pela API.
+         |    "genero" (demais campos válidos).                |
+         | 2. Verificar código HTTP.                          | HTTP 400 Bad Request.
+         | 3. Verificar corpo da resposta.                    | {"erro":"Dados inválidos","detalhes":[...]}
+         | 4. Verificar mensagem do campo genero.             | Mensagem relacionada a gênero obrigatório ou
+         |                                                    | "Gênero deve ser \"masculino\" ou \"feminino\"."
+
+
+--------------------------------------------------------------------------------
+CASO DE TESTE CT-004 — API: validação — idade fora do limite
+--------------------------------------------------------------------------------
+
+Identificação
+  Versão: 1.0
+  Data de Criação: 27/06/2026
+  Autor: [Nome do Aluno]
+  Descrição: Validar rejeição quando idade excede o máximo permitido (120).
+
+Caso de Teste
+Id       | Etapas                                              | Resultados Esperados
+---------|-----------------------------------------------------|--------------------------------------------------
+CT-004   | 1. Enviar POST /api/v1/imc/calcular com idade = 121 | Requisição enviada.
+         |    e demais campos válidos.                         |
+         | 2. Verificar código HTTP.                          | HTTP 400.
+         | 3. Verificar detalhes[0].campo.                    | "idade"
+         | 4. Verificar detalhes[0].mensagem.                 | "Idade deve ser no máximo 120."
+
+
+--------------------------------------------------------------------------------
+CASO DE TESTE CT-005 — Regra de negócio: classificação no limite do sobrepeso
+--------------------------------------------------------------------------------
+
+Identificação
+  Versão: 1.0
+  Data de Criação: 27/06/2026
+  Autor: [Nome do Aluno]
+  Descrição: Validar classificação Abeso no limite inferior de sobrepeso (IMC = 25).
+
+Caso de Teste
+Id       | Etapas                                              | Resultados Esperados
+---------|-----------------------------------------------------|--------------------------------------------------
+CT-005   | 1. Executar npm test (Vitest) OU chamar a API com   | Teste/processo executado.
+         |    dados que resultem em IMC = 25                   |
+         |    (ex.: peso 68,25 kg, altura 165 cm).           |
+         | 2. Verificar resultado.classificacao.              | "sobrepeso"
+         | 3. Verificar faixa selecionada na tabela.          | Faixa "25 – 29,9" com selecionado = true
+         | 4. Verificar mensagem NutriVitta.                  | Mensagem menciona sobrepeso e acompanhamento.
+
+
+--------------------------------------------------------------------------------
+CASO DE TESTE CT-006 — Conversão de unidades (lb e in)
+--------------------------------------------------------------------------------
+
+Identificação
+  Versão: 1.0
+  Data de Criação: 27/06/2026
+  Autor: [Nome do Aluno]
+  Descrição: Validar cálculo correto com unidades alternativas de peso e altura.
+
+Caso de Teste
+Id       | Etapas                                              | Resultados Esperados
+---------|-----------------------------------------------------|--------------------------------------------------
+CT-006   | 1. Enviar POST /calcular com peso=119 lb,           | Requisição aceita.
+         |    altura=65 in, genero=masculino, idade=30.       |
+         | 2. Verificar HTTP e IMC calculado.                 | HTTP 200; IMC coerente após conversão
+         |                                                    | (≈ 19,8 para valores equivalentes a 54 kg/165 cm).
+         | 3. Verificar pesoIdeal.unidade.                    | "lb"
+         | 4. Executar teste unitário de conversão (Vitest).  | converterPesoParaKg(100,'lb') ≈ 45,36;
+         |                                                    | converterAlturaParaMetros(165,'cm') = 1,65
+
+
+--------------------------------------------------------------------------------
+CASO DE TESTE CT-007 — Interface: gênero não selecionado
+--------------------------------------------------------------------------------
+
+Identificação
+  Versão: 1.0
+  Data de Criação: 27/06/2026
+  Autor: [Nome do Aluno]
+  Descrição: Validar validação client-side quando o paciente não seleciona gênero.
+
+Caso de Teste
+Id       | Etapas                                              | Resultados Esperados
+---------|-----------------------------------------------------|--------------------------------------------------
+CT-007   | 1. Acessar formulário (START).                     | Formulário exibido; nenhum gênero selecionado.
+         | 2. Preencher nome, idade, peso e altura.           | Campos preenchidos normalmente.
+         | 3. NÃO selecionar Masculino nem Feminino.          | Botões de gênero permanecem sem destaque.
+         | 4. Clicar em "Calcule seu IMC".                    | API NÃO é chamada.
+         | 5. Verificar mensagem de erro na tela.             | Exibe "Selecione o gênero." em #erro-form.
+
+
+--------------------------------------------------------------------------------
+CASO DE TESTE CT-008 — Interface: novo cálculo via botão (+)
+--------------------------------------------------------------------------------
+
+Identificação
+  Versão: 1.0
+  Data de Criação: 27/06/2026
+  Autor: [Nome do Aluno]
+  Descrição: Validar que após o resultado o botão (+) reinicia nova consulta em branco.
+
+Caso de Teste
+Id       | Etapas                                              | Resultados Esperados
+---------|-----------------------------------------------------|--------------------------------------------------
+CT-008   | 1. Concluir um cálculo com sucesso (CT-001).       | Tela de resultado exibida.
+         | 2. Clicar no botão (+) na barra inferior.          | Retorna ao formulário.
+         | 3. Verificar campos nome, idade, peso e altura.    | Todos em branco.
+         | 4. Verificar seleção de gênero.                    | Nenhuma opção selecionada.
+         | 5. Verificar saudação no cabeçalho.                | Exibe "Olá!"
+         | 6. Verificar unidades padrão.                        | Peso = Kg; Altura = Cm.
+         | 7. Preencher novos dados e calcular.               | Novo resultado calculado sem dados anteriores.
+
+
+--------------------------------------------------------------------------------
+HISTÓRICO DE REVISÕES (aplicar a cada caso ou ao documento geral)
+--------------------------------------------------------------------------------
+
+Versão 1.0: Criado por [Nome do Aluno] em 27/06/2026
